@@ -13,9 +13,9 @@
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Define the version of Allure you want to use via the allure.version property -->
-        <!--<allure.version>2.24.0</allure.version>-->
 
     </properties>
+
 
     <build>
         <!-- To define the plugin version in your parent POM -->

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
+    <listeners >
+        <listener class-name="Utilities.A11y.ExtentReports"/>
+    </listeners>
     <test verbose="2" preserve-order="true" name="/Users/fatma/Desktop/MyStore/myStore">
         <classes>
             <class name="testCases.AccountCreationTest">
@@ -12,21 +15,6 @@
                 <methods>
                     <include name="verifyLogoPage"/>
                     <include name="verifyTitlePage"/>
-                </methods>
-            </class>
-            <class name="testCases.LoginPageTest">
-                <methods>
-                    <include name="verifyLogin"/>
-                </methods>
-            </class>
-            <class name="testCases.MyAccountPageTest">
-                <methods>
-                    <include name="wishListTest"/>
-                </methods>
-            </class>
-            <class name="testCases.SearchResultTest">
-                <methods>
-                    <include name="verifySearchPage"/>
                 </methods>
             </class>
         </classes>
