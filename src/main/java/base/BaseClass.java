@@ -5,6 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import pages.*;
@@ -22,8 +26,9 @@ public abstract class BaseClass {
 	public static MyAccountPage myAccountPage;
 	public static AccountCreationPage accountCreationPage;
 	public static SearchResultPage searchResultPage;
+	public static WebDriverWait wait;
 	
-	@BeforeTest
+	@BeforeClass
 	public void loadConfig() throws FileNotFoundException, IOException {
 		try(FileInputStream file = new FileInputStream
 				("src/Configration/config.properties")){
@@ -35,6 +40,7 @@ public abstract class BaseClass {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+
 
 	}
 	@BeforeMethod
@@ -64,9 +70,13 @@ public abstract class BaseClass {
 		myAccountPage = new MyAccountPage(driver);
 		searchResultPage = new SearchResultPage(driver);
 	}
-	/*@AfterMethod
+	@AfterMethod
 	public void teardownBrowser() {
-		driver.quit();
-	}*/
+
+		if (driver != null) {
+			driver.quit();
+		}
+		//driver.quit();
+	}
 
 }

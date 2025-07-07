@@ -12,7 +12,11 @@
         <maven.compiler.source>19</maven.compiler.source>
         <maven.compiler.target>19</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Define the version of Allure you want to use via the allure.version property -->
+        <!--<allure.version>2.24.0</allure.version>-->
+
     </properties>
+
     <build>
         <!-- To define the plugin version in your parent POM -->
         <pluginManagement>
@@ -23,6 +27,22 @@
                     <version>3.13.0</version>
                 </plugin>
                 <!-- To use the plugin goals in your POM or parent POM -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.2.2</version>
+                    <configuration>
+                        <includes>
+                            <include>**/*Test.java</include>
+                            <include>**/*Tests.java</include>
+                            <include>**/*TestCase.java</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/Abstract*.java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -39,6 +59,14 @@
 
 
     <dependencies>
+        <!-- Add allure to dependency management to ensure correct versions of all the dependencies are used -->
+
+        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-testng -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>2.29.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -55,7 +83,8 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.8.0</version>
+            <version>7.8.0</version> <!-- Use the latest stable version -->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>ru.sbtqa</groupId>
@@ -68,7 +97,18 @@
             <artifactId>webdrivermanager</artifactId>
             <version>5.9.2</version>
         </dependency>
-
+        <!--accessibility - https://mvnrepository.com/artifact/com.deque.html.axe-core/selenium -->
+        <dependency>
+            <groupId>com.deque</groupId>
+            <artifactId>axe-selenium</artifactId>
+            <version>3.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.deque.html.axe-core</groupId>
+            <artifactId>selenium</artifactId>
+            <version>4.10.0</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
         <dependency>
@@ -102,6 +142,23 @@
             <artifactId>selenium-shutterbug</artifactId>
             <version>1.6</version>
         </dependency>
-
+        <!-- Apache Commons IO dependency -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
 </project>

@@ -1,0 +1,7 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"Verify the logo on the Index Page","26","verifyLogoPage","Default Suite","Sat Jul 05 23:47:36 BST 2025","passed","Sat Jul 05 23:47:36 BST 2025","testCases.IndexPageTest","myStore","testCases.IndexPageTest","verifyLogoPage"
+"","1677","verifyAccountCreation","All Test Suite","Sat Jul 05 22:20:03 BST 2025","passed","Sat Jul 05 22:20:05 BST 2025","testCases.AccountCreationTest","/Users/fatma/Desktop/MyStore/myStore","testCases.AccountCreationTest","verifyAccountCreation"
+"","1800","verifyLogin","All Test Suite","Sat Jul 05 22:20:14 BST 2025","passed","Sat Jul 05 22:20:15 BST 2025","testCases.LoginPageTest","/Users/fatma/Desktop/MyStore/myStore","testCases.LoginPageTest","verifyLogin"
+"","1659","wishListTest","All Test Suite","Sat Jul 05 22:20:18 BST 2025","passed","Sat Jul 05 22:20:20 BST 2025","testCases.MyAccountPageTest","/Users/fatma/Desktop/MyStore/myStore","testCases.MyAccountPageTest","wishListTest"
+"","985","verifySearchPage","All Test Suite","Sat Jul 05 22:20:23 BST 2025","passed","Sat Jul 05 22:20:24 BST 2025","testCases.SearchResultTest","/Users/fatma/Desktop/MyStore/myStore","testCases.SearchResultTest","verifySearchPage"
+"Welcome to the Index Page","22","verifyTitlePage","Default Suite","Sat Jul 05 23:05:58 BST 2025","failed","Sat Jul 05 23:05:59 BST 2025","testCases.IndexPageTest","myStore","testCases.IndexPageTest","verifyTitlePage"

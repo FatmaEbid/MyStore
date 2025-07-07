@@ -1,0 +1,1 @@
+{"uuid":"b219cc94-4e3e-4d85-89e7-f6b0a7ebe012","name":"testCases.MyAccountPageTest","children":["2cd689f5-c306-46ed-bbc5-cf767973a944"],"befores":[{"name":"loadConfig","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1751750416065,"stop":1751750416065}],"afters":[],"start":1751750399971,"stop":1751750424644}
