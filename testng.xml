@@ -2,19 +2,20 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="All Test Suite">
     <listeners >
-        <listener class-name="Utilities.A11y.ExtentReports"/>
+<!--
+        <listener class-name="Utilities.A11y.ExtentReports"/>  &lt;!&ndash; > Listener for Extent Reports &ndash;&gt;
+-->
+        <listener class-name="Utilities.A11y.AllureReportListener"/>
+<!--
+        <listener class-name="Utilities.A11y.TestListener"/>
+-->
+
     </listeners>
     <test verbose="2" preserve-order="true" name="/Users/fatma/Desktop/MyStore/myStore">
         <classes>
             <class name="testCases.AccountCreationTest">
                 <methods>
                     <include name="verifyAccountCreation"/>
-                </methods>
-            </class>
-            <class name="testCases.IndexPageTest">
-                <methods>
-                    <include name="verifyLogoPage"/>
-                    <include name="verifyTitlePage"/>
                 </methods>
             </class>
         </classes>

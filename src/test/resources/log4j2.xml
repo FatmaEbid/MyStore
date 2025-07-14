@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+<Properties>
+<!-- File location -->
+<Property name="LOG_HOME">./logs/app.log</Property>
+</Properties>
+
+<Appenders>
+<!-- Console Appender -->
+<Console name="Console" target="SYSTEM_OUT">
+
+<!--
+    <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] [Thread %t]- %m%n"/>
+-->
+    <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] %X{testCaseName} - %msg%n}"
+    disableAnsi="false" noConsoleNoAnsi="false"/>
+
+
+</Console>
+
+<!-- Rolling File Appender -->
+<!--
+<RollingFile name="File" fileName="${LOG_HOME}" filePattern="./logs/app-%d{yyyy-MM-dd}.%i.log" append="false">
+-->
+
+    <RollingFile name="File" fileName="logs/app.log" filePattern="logs/app-%d{yyyy-MM-dd-HH-mm-ss}.log">
+
+        <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %X{testCaseName} - %msg%n"/>
+
+        <Policies>
+<TimeBasedTriggeringPolicy />
+<SizeBasedTriggeringPolicy size="5000" />
+</Policies>
+<DefaultRolloverStrategy max="60" />
+</RollingFile>
+</Appenders>
+
+<Loggers>
+<!-- Custom Logger -->
+<Logger name="com.mkyong" level="debug" additivity="false">
+<AppenderRef ref="Console" />
+<AppenderRef ref="File" />
+</Logger>
+
+<!-- Root Logger -->
+<Root level="info">
+<AppenderRef ref="Console" />
+<AppenderRef ref="File"/>
+
+</Root>
+</Loggers>
+</Configuration>

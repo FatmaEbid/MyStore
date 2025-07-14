@@ -1,0 +1,34 @@
+2025-07-14 16:13:54.701 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.707 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.707 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.708 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.708 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.708 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.708 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.708 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.710 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.714 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 4 ms.
+2025-07-14 16:13:54.715 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.715 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.716 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.716 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.716 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.716 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.717 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.717 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.718 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.718 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.719 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.719 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.719 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.719 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.720 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.720 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.721 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.721 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.721 INFO   - [Utils] MethodGroupsHelper.collectMethodsByGroup() took 0 ms.
+2025-07-14 16:13:54.721 INFO   - [Utils] MethodGroupsHelper.sortMethods() took 0 ms.
+2025-07-14 16:13:54.723 INFO   - [TestNG] Running:
+  /Users/fatma/Library/CloudStorage/OneDrive-NATIONALTRUST(2)/Desktop/MyStore/myStore/testng.xml
+
+2025-07-14 16:13:54.731 INFO   - [Utils] DynamicGraphHelper.createDynamicGraph() took 1 ms.

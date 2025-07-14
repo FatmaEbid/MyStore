@@ -1,6 +1,10 @@
 package base;
 
 import actionDriver.Action;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -12,6 +16,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 import pages.*;
+
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,6 +32,7 @@ public abstract class BaseClass {
 	public static AccountCreationPage accountCreationPage;
 	public static SearchResultPage searchResultPage;
 	public static WebDriverWait wait;
+	public static Logger logger;
 	
 	@BeforeClass
 	public void loadConfig() throws FileNotFoundException, IOException {
@@ -69,6 +75,12 @@ public abstract class BaseClass {
 		loginPage = new LoginPage(driver);
 		myAccountPage = new MyAccountPage(driver);
 		searchResultPage = new SearchResultPage(driver);
+		try{
+			PropertyConfigurator.configure("src/test/resources/log4j2.xml");
+
+		}catch (Exception e){
+			logger.error("failed truncating table `{}`");
+		}
 	}
 	@AfterMethod
 	public void teardownBrowser() {

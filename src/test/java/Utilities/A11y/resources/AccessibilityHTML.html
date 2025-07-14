@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accessibility Report</title>
+    <style>
+        body {
+            background-color: #2E2E2E;
+            font-family: Arial, sans-serif;
+            color: #FFFFFF;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #2E2E2E;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .header h1 {
+            color: #FFC107;
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        .summary-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .card {
+            flex: 1 1 200px;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .card .value {
+            font-size: 2.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .blue { background-color: #007BFF; }
+        .red { background-color: #C62828; }
+        .yellow { background-color: #FFC107; color: #000000; }
+        .cyan { background-color: #00ACC1; }
+
+        .chart-container {
+            width: 80%;
+            margin: auto;
+            padding: 1rem;
+        }
+
+        canvas {
+            background-color: #2E2E2E;
+        }
+
+        .buttons-container {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .filter-btn {
+            margin: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-btn:hover {
+            opacity: 0.9;
+        }
+
+        .high { background-color: #FF5252; }
+        .medium { background-color: #FFB300; }
+        .low { background-color: #4CAF50; }
+
+        .violation-table {
+            width: 90%;
+            margin: 2rem auto;
+            border-collapse: collapse;
+            display: none;
+        }
+
+        .violation-table th, .violation-table td {
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .violation-table th {
+            background-color: #444;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🦽 Accessibility Report</h1>
+    <p id="reportDetails">Generated for: <strong id="projectName">N/A</strong> | Date: <strong id="dateTime">N/A</strong></p>
+</div>
+
+<div class="summary-container">
+    <div class="card blue">
+        Number of URLs
+        <div class="value" id="urlCount">0</div>
+    </div>
+    <div class="card red">
+        Errors
+        <div class="value" id="errorCount">0</div>
+    </div>
+    <div class="card yellow">
+        Warnings
+        <div class="value" id="warningCount">0</div>
+    </div>
+    <div class="card cyan">
+        Notices
+        <div class="value" id="noticeCount">0</div>
+    </div>
+</div>
+
+<div class="chart-container">
+    <canvas id="summaryChart" height="300"></canvas>
+</div>
+
+<div class="buttons-container">
+    <button class="filter-btn red" onclick="showViolations('error')">Show Errors</button>
+    <button class="filter-btn yellow" onclick="showViolations('warning')">Show Warnings</button>
+    <button class="filter-btn cyan" onclick="showViolations('notice')">Show Notices</button>
+</div>
+
+<table class="violation-table" id="violationTable">
+    <thead>
+    <tr>
+        <th>Description</th>
+        <th>Impact</th>
+        <th>WCAG Level</th>
+        <th>HTML Element</th>
+        <th>URL</th>
+    </tr>
+    </thead>
+    <tbody id="violationBody"></tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function renderChart(errors, warnings, notices) {
+        const ctx = document.getElementById('summaryChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Errors', 'Warnings', 'Notices'],
+                datasets: [{
+                    label: 'Issue Summary',
+                    data: [errors, warnings, notices],
+                    backgroundColor: ['#C62828', '#FFC107', '#00ACC1']
+                }]
+            },
+            options: {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + ' issues';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function showViolations(type) {
+        const table = document.getElementById("violationTable");
+        const tbody = document.getElementById("violationBody");
+        tbody.innerHTML = "";
+
+        let filtered = violations.filter(v => v.type === type);
+        filtered.forEach(v => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                    <td>${v.description}</td>
+                    <td class="${v.impact}">${v.impact}</td>
+                    <td>${v.wcagLevel}</td>
+                    <td>${v.element}</td>
+                    <td>${v.url}</td>
+                `;
+            tbody.appendChild(row);
+        });
+
+        table.style.display = "table";
+    }
+
+    // To be replaced with dynamic content from Java
+    const violations = [];
+    renderChart(0, 0, 0);
+</script>
+
+</body>
+</html>
