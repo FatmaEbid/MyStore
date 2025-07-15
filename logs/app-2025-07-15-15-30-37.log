@@ -1,3 +1,0 @@
-2025-07-15 15:30:37.565 [INFO] [Thread main]  [Utilities.A11y.TestLogListener.16]: [✅ Test passed]
-2025-07-15 15:30:37.775 [INFO] [Thread main]  [Utilities.A11y.TestSuiteLogger.13]: [Finished test suite: All Test Suite]
-2025-07-15 15:30:37.777 [INFO] [Thread main]  [TestNG] Time taken by org.testng.internal.ExitCodeListener@7b78ed6a: 0 ms

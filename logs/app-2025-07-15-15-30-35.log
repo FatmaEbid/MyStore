@@ -1,3 +1,0 @@
-2025-07-15 15:30:35.462 [INFO] [Thread main]  [testCases.AccountCreationTest.13]: [Setting up the test environment]
-2025-07-15 15:30:35.514 [INFO] [Thread main]  [Utilities.A11y.TestLogListener.10]: [🔹 Starting Test: verifyAccountCreation]
-2025-07-15 15:30:35.514 [DEBUG] [Thread main]  [testCases.AccountCreationTest.20]: [Debug: Starting Account Creation Test]
