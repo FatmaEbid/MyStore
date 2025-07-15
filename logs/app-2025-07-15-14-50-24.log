@@ -1,0 +1,5 @@
+2025-07-15 14:50:24.051 [INFO] [Thread main]  [testCases.AccountCreationTest.13]: [Setting up the test environment]
+2025-07-15 14:50:24.067 [DEBUG] [Thread main]  [testCases.AccountCreationTest.20]: [Debug: Starting Account Creation Test]
+2025-07-15 14:50:24.834 [ERROR] [Thread main]  [testCases.AccountCreationTest.26]: [Error: Account creation failed]
+2025-07-15 14:50:24.835 [WARN] [Thread main]  [testCases.AccountCreationTest.27]: [warning: Account creation might not be successful]
+2025-07-15 14:50:24.835 [FATAL] [Thread main]  [testCases.AccountCreationTest.28]: [fatal: Account creation test failed]

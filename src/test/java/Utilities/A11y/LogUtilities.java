@@ -2,41 +2,46 @@ package Utilities.A11y;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import org.apache.logging.log4j.ThreadContext;
+
+import java.lang.StackWalker;
+import java.lang.StackWalker.StackFrame;
+import java.util.Optional;
 
 public class LogUtilities {
 
 	public static Logger logger = LogManager.getLogger();
-
-	// This method is used to get the logger instance for the current class
-	// It uses the class name from the stack trace to create a logger
-	// This allows for dynamic logging based on the class that is currently executing
-	public static Logger getLogger() {
-		 logger = LogManager.getLogger(Thread.currentThread().getStackTrace()[3].getClassName());
-		return logger;
+	// 🧠 Short method to extract test method name
+	private static String testName() {
+		return StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE)
+				.walk(frames -> frames.skip(2).findFirst())
+				.map(frame -> frame.getClassName() + "." + frame.getLineNumber())
+				.orElse("UnknownTest");
 	}
+	public static void setTestName(String name) {
+		ThreadContext.put("testCaseName", name);
+	}
+
 
 
 	public static void info(String message) {
-		getLogger().info(message);
+		logger.info("[{}]: [{}]", testName(), message);
 	}
 
 	public static void warn(String message) {
-		getLogger().warn(message);
+		logger.warn("[{}]: [{}]", testName(), message);
 	}
 
 	public static void error(String message) {
-		getLogger().error(message);
+		logger.error("[{}]: [{}]", testName(), message);
 	}
 
 	public static void fatal(String message) {
-		getLogger().fatal(message);
+		logger.fatal("[{}]: [{}]", testName(), message);
 	}
 
 	public static void debug(String message) {
-		getLogger().debug(message);
+		logger.debug("[{}]: [{}]", testName(), message);
 	}
 
 }

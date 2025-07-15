@@ -1,0 +1,3 @@
+2025-07-15 15:34:00.800 [ERROR] [Thread main]  [testCases.AccountCreationTest.26]: [Error: Account creation failed]
+2025-07-15 15:34:00.802 [WARN] [Thread main]  [testCases.AccountCreationTest.27]: [warning: Account creation might not be successful]
+2025-07-15 15:34:00.802 [FATAL] [Thread main]  [testCases.AccountCreationTest.28]: [fatal: Account creation test failed]

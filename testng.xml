@@ -6,9 +6,13 @@
         <listener class-name="Utilities.A11y.ExtentReports"/>  &lt;!&ndash; > Listener for Extent Reports &ndash;&gt;
 -->
         <listener class-name="Utilities.A11y.AllureReportListener"/>
+        <listener class-name="Utilities.A11y.TestLogListener"/>
 <!--
-        <listener class-name="Utilities.A11y.TestListener"/>
+        <listener class-name="Utilities.A11y.TestSuiteLogger"/>
 -->
+
+
+
 
     </listeners>
     <test verbose="2" preserve-order="true" name="/Users/fatma/Desktop/MyStore/myStore">

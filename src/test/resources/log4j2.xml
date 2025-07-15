@@ -1,31 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="info">
 <Properties>
 <!-- File location -->
-<Property name="LOG_HOME">./logs/app.log</Property>
+<Property name="LOG_HOME">./logs/app.log</Property> <!--this is the log report src -->
 </Properties>
 
 <Appenders>
 <!-- Console Appender -->
 <Console name="Console" target="SYSTEM_OUT">
 
-<!--
-    <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%p] [Thread %t]- %m%n"/>
--->
-    <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] %X{testCaseName} - %msg%n}"
-    disableAnsi="false" noConsoleNoAnsi="false"/>
+    <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] %m%n}"  />
 
 
 </Console>
-
-<!-- Rolling File Appender -->
-<!--
-<RollingFile name="File" fileName="${LOG_HOME}" filePattern="./logs/app-%d{yyyy-MM-dd}.%i.log" append="false">
--->
-
+<!-- File Appender -->
     <RollingFile name="File" fileName="logs/app.log" filePattern="logs/app-%d{yyyy-MM-dd-HH-mm-ss}.log">
 
-        <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %X{testCaseName} - %msg%n"/>
+        <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] [Thread %t]  %m%n"/>  <!--%-5level %X{testCaseName} - %msg%n -->
 
         <Policies>
 <TimeBasedTriggeringPolicy />
@@ -37,7 +28,7 @@
 
 <Loggers>
 <!-- Custom Logger -->
-<Logger name="com.mkyong" level="debug" additivity="false">
+<Logger name="Utilities.A11y" level="info" additivity="false">
 <AppenderRef ref="Console" />
 <AppenderRef ref="File" />
 </Logger>

@@ -17,12 +17,15 @@ public class AccountCreationTest extends BaseClass {
 
 	@Test
 	public void verifyAccountCreation() {
- 		LogUtilities.info("try");
+ 		LogUtilities.debug("Debug: Starting Account Creation Test");
 		//Utilities.A11y.TestListener.info("Verifying Account Creation");
 		IndexPage indexPage = new IndexPage(driver);
 		indexPage.clickSignInButton();
 		String time = Action.getCurrentTime();
 		loginPage.creatNewAccount(time+"email@ght.com");
+		/*LogUtilities.error("Error: Account creation failed");
+		LogUtilities.warn("warning: Account creation might not be successful");
+		LogUtilities.fatal("fatal: Account creation test failed");*/
 		accountCreationPage.pageHeadingIsDisplayed();
 	}
 }
