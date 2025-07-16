@@ -1,1 +1,0 @@
-{"uuid":"dd1c6bc4-25e7-431a-a1b2-2f0a9315fbf3","name":"testCases.IndexPageTest","children":["c975c832-ebf5-480b-a5a1-a1e4dd872b3c"],"befores":[{"name":"loadConfig","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1751755653105,"stop":1751755653111}],"afters":[],"start":1751755653092,"stop":1751755656842}

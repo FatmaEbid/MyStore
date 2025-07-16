@@ -11,7 +11,6 @@ public class MyAccountPageTest extends BaseClass {
 	public void wishListTest(){
 		loginPage = indexPage.clickSignInButton();
 		loginPage.userLogin(properties.getProperty("email"), properties.getProperty("password") );
-		//softAssert.assertEquals(myAccountPage.pageHeading(), "MY ACCOUNT");
 		Assert.assertEquals(myAccountPage.pageHeading(), "MY ACCOUNT");
 		myAccountPage.getMyAccountLists();
 		Assert.assertTrue(myAccountPage.validateOrdersHistoryText());
