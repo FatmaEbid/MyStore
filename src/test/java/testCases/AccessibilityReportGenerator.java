@@ -1,105 +1,163 @@
 package testCases;
 
+import com.deque.axe.AXE;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.openqa.selenium.WebDriver;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Date;
 
 public class AccessibilityReportGenerator {
 
-	public static void generateHtmlReport(List<AxeResult> allViolations, WcagLevel wcagLevel, ReportMetadata metadata, String templatePath, String outputPath) {
+	private static final String TEMPLATE_PATH = "templates/accessibility-report-template.html";
+	private static final String REPORT_DIR = "a11yReport/";
+
+	public static void generateReport(WebDriver driver, WCAGLevel level) {
 		try {
-			// Step 1: Filter violations by WCAG level
-			List<AxeResult> filteredViolations = filterByWcagLevel(allViolations, wcagLevel);
+			JSONObject responseJSON = runAxeAnalysis(driver);
+			JSONArray violations = responseJSON.getJSONArray("violations");
 
-			// Step 2: Count issues by type
-			Map<String, Long> issueCounts = countIssuesByType(filteredViolations);
+			List<JSONObject> filtered = filterByLevel(violations, level);
 
-			// Step 3: Read HTML template from file
-			String htmlTemplate = new String(Files.readAllBytes(Paths.get(templatePath)));
+			String htmlTemplate = loadTemplate(TEMPLATE_PATH);
+			String timestamp = new SimpleDateFormat("dd-MM-yyy_HH-mm-ss").format(new Date());
+			String reportName = "AccessibilityReport_" + timestamp + ".html";
+			String outputPath = REPORT_DIR + reportName;
 
-			// Step 4: Replace placeholders in the template
-			String populatedHtml = populateHtml(htmlTemplate, filteredViolations, metadata, wcagLevel, issueCounts);
+			int errorCount = (int) filtered.stream()
+					.filter(v -> getImpact(v).equals("critical") || getImpact(v).equals("serious"))
+					.count();
+			int warningCount = (int) filtered.stream()
+					.filter(v -> getImpact(v).equals("moderate"))
+					.count();
+			int noticeCount = (int) filtered.stream()
+					.filter(v -> getImpact(v).equals("minor"))
+					.count();
 
-			// Step 5: Write HTML to output file
-			Files.write(Paths.get(outputPath), populatedHtml.getBytes());
+			String issuesHtml = buildIssuesSection(filtered);
 
-		} catch (IOException e) {
+			htmlTemplate = htmlTemplate.replace("{{ERROR_COUNT}}", String.valueOf(errorCount))
+					.replace("{{WARNING_COUNT}}", String.valueOf(warningCount))
+					.replace("{{NOTICE_COUNT}}", String.valueOf(noticeCount))
+					.replace("{{ISSUES_SECTION}}", issuesHtml)
+					.replace("{{WCAG_LEVEL}}", level.name())
+					.replace("{{URL}}", driver.getCurrentUrl())
+					.replace("{{TIMESTAMP}}", timestamp)
+					.replace("{{BROWSER}}", "Chrome") // You can dynamically set if needed
+					.replace("{{DEVICE}}", "Desktop") // Adjust accordingly
+					.replace("{{URL_COUNT}}", "1")
+					.replace("{{LOGO_BASE64}}", ""); // Optional logo
+
+			writeFile(outputPath, htmlTemplate);
+			openReport(outputPath);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static List<AxeResult> filterByWcagLevel(List<AxeResult> violations, WcagLevel level) {
-		return violations.stream()
-				.filter(v -> v.getTags().stream().anyMatch(tag -> tag.equalsIgnoreCase("wcag" + level.name().toLowerCase())))
-				.collect(Collectors.toList());
+	private static JSONObject runAxeAnalysis(WebDriver driver) {
+		AXE.Builder builder = new AXE.Builder(driver, getAxeScript());
+		return builder.analyze();
 	}
 
-	private static Map<String, Long> countIssuesByType(List<AxeResult> violations) {
-		return violations.stream()
-				.collect(Collectors.groupingBy(AxeResult::getImpact, Collectors.counting()));
+	private static URL getAxeScript() {
+		return AccessibilityReportGenerator.class.getResource("/axe.min.js");
 	}
 
-	private static String populateHtml(String template, List<AxeResult> violations, ReportMetadata metadata, WcagLevel level, Map<String, Long> issueCounts) {
-		// Replace metadata placeholders
-		template = template.replace("{{REPORT_TITLE}}", metadata.getReportTitle());
-		template = template.replace("{{GENERATED_DATE}}", metadata.getGeneratedDate());
-		template = template.replace("{{TESTED_BY}}", metadata.getTestedBy());
-		template = template.replace("{{URL_COUNT}}", String.valueOf(metadata.getUrlCount()));
-		template = template.replace("{{WCAG_LEVEL}}", level.name());
+	/** Loads HTML template as a string. */
+	private static String loadTemplate(String path) throws IOException {
+		InputStream in = AccessibilityReportGenerator.class.getClassLoader().getResourceAsStream(path);
+		if (in == null) throw new FileNotFoundException(path + " not found!");
+		return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+	}
 
-		// Replace issue counts
-		template = template.replace("{{ERROR_COUNT}}", String.valueOf(issueCounts.getOrDefault("critical", 0L)));
-		template = template.replace("{{WARNING_COUNT}}", String.valueOf(issueCounts.getOrDefault("serious", 0L)));
-		template = template.replace("{{NOTICE_COUNT}}", String.valueOf(issueCounts.getOrDefault("moderate", 0L) + issueCounts.getOrDefault("minor", 0L)));
+	/** Writes report to file. */
+	private static void writeFile(String filePath, String content) throws IOException {
+		File dir = new File(REPORT_DIR);
+		if (!dir.exists()) dir.mkdirs();
+		try (FileOutputStream out = new FileOutputStream(filePath)) {
+			out.write(content.getBytes(StandardCharsets.UTF_8));
+		}
+	}
 
-		// Generate HTML rows for filtered issues
-		StringBuilder issuesHtml = new StringBuilder();
-		for (AxeResult v : violations) {
-			String color = getImpactColor(v.getImpact());
-			issuesHtml.append("<div class='issue' style='border-left: 6px solid ").append(color).append(";'>")
-					.append("<h4>").append(v.getDescription()).append("</h4>")
-					.append("<p><strong>Impact:</strong> ").append(v.getImpact()).append("</p>")
-					.append("<p><strong>Help:</strong> <a href='").append(v.getHelpUrl()).append("'>More info</a></p>")
+	/** Opens the report in the default browser (desktop only). */
+	private static void openReport(String filePath) throws IOException {
+		File htmlFile = new File(filePath);
+		java.awt.Desktop.getDesktop().browse(htmlFile.toURI());
+	}
+
+	/** Filters violations by WCAG level. */
+	private static List<JSONObject> filterByLevel(JSONArray all, WCAGLevel level) {
+		Map<String, WCAGLevel> tagLevels = Map.of(
+				"wcag111", WCAGLevel.A,
+				"wcag121", WCAGLevel.A,
+				"wcag131", WCAGLevel.A,
+				"wcag211", WCAGLevel.A,
+				"wcag212", WCAGLevel.AA,
+				"wcag246", WCAGLevel.AAA
+				// Add more mappings as needed
+		);
+
+		List<JSONObject> result = new ArrayList<>();
+
+		for (int i = 0; i < all.length(); i++) {
+			JSONObject v = all.getJSONObject(i);
+			JSONArray tags = v.optJSONArray("tags");
+			if (tags == null) continue;
+
+			for (int j = 0; j < tags.length(); j++) {
+				String tag = tags.getString(j).toLowerCase();
+				WCAGLevel tagLevel = tagLevels.get(tag);
+				if (tagLevel != null && tagLevel.ordinal() <= level.ordinal()) {
+					result.add(v);
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
+	private static String getImpact(JSONObject violation) {
+		return violation.optString("impact", "none").toLowerCase();
+	}
+
+	private static String buildIssuesSection(List<JSONObject> violations) {
+		StringBuilder sb = new StringBuilder();
+		for (JSONObject v : violations) {
+			String impact = getImpact(v);
+			String description = v.optString("description", "");
+			String help = v.optString("help", "");
+			String helpUrl = v.optString("helpUrl", "");
+			String type = impact.equals("minor") ? "notice" : impact.equals("moderate") ? "warning" : "error";
+			String wcagTag = v.optJSONArray("tags").optString(0);
+
+			sb.append("<div class='violation-card impact-").append(impact).append("' data-type='").append(type).append("'>")
+					.append("<h3>").append(help).append("</h3>")
+					.append("<p>").append(description).append("</p>")
+					.append("<p><strong>Impact:</strong> ").append(impact)
+					.append(" | <strong>WCAG:</strong> ").append(wcagTag).append("</p>")
+					.append("<a href='").append(helpUrl).append("' target='_blank' style='color:#4fc3f7'>More Info</a>")
 					.append("</div>");
 		}
-
-		template = template.replace("{{ISSUES_SECTION}}", issuesHtml.toString());
-
-		// Chart data placeholder (for simplicity now, we'll enhance it next)
-		template = template.replace("{{CHART_DATA}}", generateChartJs(issueCounts));
-
-		return template;
+		return sb.toString();
 	}
 
-	private static String getImpactColor(String impact) {
-		switch (impact.toLowerCase()) {
-			case "critical": return "#d32f2f";  // Red
-			case "serious": return "#fbc02d";  // Yellow
-			case "moderate": return "#0288d1"; // Blue
-			case "minor": return "#7cb342";    // Green
-			default: return "#9e9e9e";           // Grey
-		}
-	}
 
-	private static String generateChartJs(Map<String, Long> counts) {
-		return "const chartData = {\n" +
-				"  labels: ['Errors', 'Warnings', 'Notices'],\n" +
-				"  datasets: [{\n" +
-				"    data: [" + counts.getOrDefault("critical", 0L) + ", " +
-				"           " + counts.getOrDefault("serious", 0L) + ", " +
-				"           " + (counts.getOrDefault("moderate", 0L) + counts.getOrDefault("minor", 0L)) + "],\n" +
-				"    backgroundColor: ['#d32f2f', '#fbc02d', '#0288d1'],\n" +
-				"    hoverOffset: 10\n" +
-				"  }]\n" +
-				"};\n" +
-				"const config = { type: 'pie', data: chartData };\n" +
-				"new Chart(document.getElementById('summaryChart'), config);";
-	}
-}
 
+//@@@@@@@@
 // Sample AxeResult class structure used for demonstration
 class AxeResult {
 	private String description;
@@ -115,7 +173,7 @@ class AxeResult {
 }
 
 // Enum for WCAG Level
-enum WcagLevel{
+public  enum WCAGLevel{
 	A, AA, AAA, WCAG21A, WCAG21AA, WCAG21AAA, HTML, ARIA, BEST_PRACTICE, SECTION508, ACT;
 }
 
@@ -128,10 +186,21 @@ class ReportMetadata {
 	private String testedBy;
 
 	// Getters and constructors
-	public String getReportTitle() { return reportTitle; }
-	public String getGeneratedDate() { return generatedDate; }
-	public int getUrlCount() { return urlCount; }
-	public String getTestedBy() { return testedBy; }
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public String getGeneratedDate() {
+		return generatedDate;
+	}
+
+	public int getUrlCount() {
+		return urlCount;
+	}
+
+	public String getTestedBy() {
+		return testedBy;
+	}
 
 	public ReportMetadata(String reportTitle, String generatedDate, int urlCount, String testedBy) {
 		this.reportTitle = reportTitle;
@@ -139,4 +208,4 @@ class ReportMetadata {
 		this.urlCount = urlCount;
 		this.testedBy = testedBy;
 	}
-}
+}}

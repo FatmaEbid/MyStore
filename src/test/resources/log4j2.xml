@@ -9,7 +9,7 @@
 <!-- Console Appender -->
 <Console name="Console" target="SYSTEM_OUT">
 
-    <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%p] %m%n}"  />
+    <PatternLayout pattern="%highlight{%d{yyyy-MM-dd  HH:mm:ss.SSS} [%p] %m%n}"  />
 
 
 </Console>

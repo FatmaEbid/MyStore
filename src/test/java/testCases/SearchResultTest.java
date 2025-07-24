@@ -7,7 +7,6 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-import static testCases.WcagLevel.*;
 
 
 public class SearchResultTest extends BaseClass {

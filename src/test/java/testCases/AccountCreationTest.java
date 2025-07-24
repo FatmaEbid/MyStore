@@ -6,7 +6,6 @@ import org.testng.annotations.*;
 import pages.IndexPage;
 
 
-
 public class AccountCreationTest extends BaseClass {
 	@BeforeMethod
 	public void setUp() {
@@ -17,7 +16,7 @@ public class AccountCreationTest extends BaseClass {
 
 	@Test
 	public void verifyAccountCreation() {
- 		LogUtilities.debug("Debug: Starting Account Creation Test");
+ 		LogUtilities.info("Info: Starting Account Creation Test");
 		//Utilities.A11y.TestListener.info("Verifying Account Creation");
 		IndexPage indexPage = new IndexPage(driver);
 		indexPage.clickSignInButton();
@@ -26,6 +25,7 @@ public class AccountCreationTest extends BaseClass {
 		/*LogUtilities.error("Error: Account creation failed");
 		LogUtilities.warn("warning: Account creation might not be successful");
 		LogUtilities.fatal("fatal: Account creation test failed");*/
+		AccessibilityReportGenerator.generateReport(driver, AccessibilityReportGenerator.WCAGLevel.WCAG21AAA);
 		accountCreationPage.pageHeadingIsDisplayed();
 	}
 }
