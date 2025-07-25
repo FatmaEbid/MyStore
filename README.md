@@ -69,7 +69,7 @@ At the end (or beginning) of any test method, call the helper method:
 
 ```java
 // Single-line invocation within your test
-LighthouseUtility.runAuditForCurrentUrl(driver, "MyReportBaseName");
+LighthouseUtility.runAuditForCurrentUrl(driver);
 ```
 
 This will:
@@ -113,8 +113,6 @@ LogUtilities.info("✅Lighthouse audit completed for: " + driver.getCurrentUrl()
 ### 6. Configuring Flags & Official References
 
 * **Official Lighthouse CLI Flags**:
-
-  * GitHub Docs: [https://github.com/GoogleChrome/lighthouse/blob/main/docs/cli-flags.md](https://github.com/GoogleChrome/lighthouse/blob/main/docs/cli-flags.md)
   * Categories: `--only-categories=<list>` (e.g., `accessibility,performance`)
   * Output: `--output=<html|json|csv>`
   * Path: `--output-path=<path1>[,<path2>]`
@@ -137,5 +135,4 @@ Allure.addAttachment("json report", new FileInputStream(jsonReportFile));
 In the Allure UI, these attachments appear under the **`Attachments`** section for each test. You can click the HTML file link to open it directly from the report.
 
 ---
-
-With this setup, any team member can clone the repository, run tests locally or in CI, and view detailed Lighthouse accessibility and performance audits integrated seamlessly into the existing test framework and Allure dashboard. Good luck, and happy testing! 🚀
+Good luck, and happy testing! 🚀
