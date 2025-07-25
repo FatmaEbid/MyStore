@@ -20,7 +20,7 @@ Before using the utility, ensure you have the following installed on your machin
 * **Maven or Gradle** for project build management
 * **Google Chrome** (for Lighthouse audits)
 * **Node.js (v14+)**
-* **Lighthouse CLI** (install globally):
+* **Lighthouse CLI** (install macOS / Linux Setup):
   ```bash
   npm install npm
   npm -v     // to know the npm version
