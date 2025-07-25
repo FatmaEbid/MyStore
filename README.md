@@ -108,8 +108,8 @@ To include Lighthouse at the suite level, add a custom listener or utility call 
 In `LighthouseListener`, implement `onFinish(ISuite suite)` to call:
 
 ```java
-WebDriver driver = DriverManager.getDriver();
-LighthouseUtility.runAuditForCurrentUrl(driver, "SuiteReport");
+LighthouseUtility.runAuditForCurrentUrl(driver);
+LogUtilities.info("✅Lighthouse audit completed for: " + driver.getCurrentUrl());
 ```
 
 <br/>
