@@ -1,3 +1,2 @@
-2025-07-23 17:57:47.474 [INFO] [Thread main]  [TestNG] Running:
-  C:\Users\batoty\AppData\Local\JetBrains\IdeaIC2025.1\temp-testng-customsuite.xml
-
+2025-07-25 10:36:28.496 [INFO] [Thread main]  [testCases.AccountCreationTest.18]: [Setting up the test environment]
+2025-07-25 10:36:28.503 [INFO] [Thread main]  [testCases.AccountCreationTest.39]: [Info:Starting Lighthouse Test]

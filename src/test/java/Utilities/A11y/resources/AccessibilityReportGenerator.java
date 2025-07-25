@@ -19,11 +19,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AccessibilityReportGenerator {
 	public static WebDriver driver;
 	// 1) Axe script for injection
-	private static final URL AXE_SCRIPT_URL =
+	private static final URL scriptUrl =
 			AccessibilityReportGenerator.class.getResource("/axe.min.js");
 
 	// 2) Template file in resources (classpath)
@@ -41,14 +43,14 @@ public class AccessibilityReportGenerator {
 	 * @return          The path to the generated HTML report
 	 */
 	public static String generateReport(WebDriver driver, WCAGLevel level) throws IOException {
-		if (AXE_SCRIPT_URL == null) {
+		if (scriptUrl == null) {
 			throw new IllegalStateException("axe.min.js not found in resources!");
 		}
 
 		// ————————————————————————————————————————————————
 		// 1) Run Axe audit
-		JSONObject result = new AXE.Builder(driver, AXE_SCRIPT_URL).analyze();
-		JSONArray allViolations = result.getJSONArray("violations");
+		JSONObject responseJSON = new AXE.Builder(driver, scriptUrl).analyze();
+		JSONArray allViolations = responseJSON.getJSONArray("violations");
 
 		// 2) Filter by chosen WCAG level (tags like "wcag2aa")
 		List<JSONObject> filtered = filterByLevel(allViolations, level);
@@ -155,22 +157,20 @@ public class AccessibilityReportGenerator {
 
 	/** Build HTML cards for each violation in the filtered list. */
 	private static String buildIssueCards(List<JSONObject> violations) {
-		StringBuilder sb = new StringBuilder();
-		for (JSONObject v : violations) {
-			String imp = v.optString("impact","").toLowerCase();
-			String cls = "impact-" +
-					(imp.equals("critical")||imp.equals("serious") ? "high"
-							: imp.equals("moderate") ? "medium" : "low");
-			sb.append("<div class='violation-card ").append(cls)
-					.append("' data-type='").append(imp).append("'>")
-					.append("<h3>").append(v.optString("help","Untitled")).append("</h3>")
-					.append("<p>").append(v.optString("description","")).append("</p>")
-					.append("<p><a href='").append(v.optString("helpUrl"))
-					.append("' target='_blank'>More info</a></p>")
-					.append("</div>");
+		Map<String, Long> impactCount = violations.stream()
+				.map(v -> v.optString("impact", "unknown"))
+				.collect(Collectors.groupingBy(i -> i, Collectors.counting()));
+
+		StringBuilder chart = new StringBuilder();
+		chart.append("[\n");
+		for (Map.Entry<String, Long> entry : impactCount.entrySet()) {
+			chart.append(String.format("{ label: '%s', value: %d },\n", entry.getKey(), entry.getValue()));
 		}
-		return sb.toString();
-	}
+		chart.append("]");
+		return chart.toString();
+		}
+
+
 
 	/** Retrieve simple browser info—customize as needed. */
 	private static String getBrowserInfo(WebDriver d) {
