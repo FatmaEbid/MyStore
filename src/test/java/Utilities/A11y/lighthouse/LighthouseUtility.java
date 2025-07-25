@@ -1,6 +1,7 @@
 package Utilities.A11y.lighthouse;
 
 import io.qameta.allure.Allure;
+import org.openqa.selenium.WebDriver;
 
 import java.awt.*;
 import java.io.*;
@@ -12,9 +13,18 @@ import java.util.stream.Collectors;
 public class LighthouseUtility {
 	private static final String REPORTS_DIR = "lighthouse-reports";
 
+	public static void runAuditForCurrentUrl(WebDriver driver) {
+		String currentUrl = driver.getCurrentUrl();
+		runLighthouseAudit(
+				currentUrl,
+				List.of(LighthouseCategory.ACCESSIBILITY, LighthouseCategory.PERFORMANCE),
+				List.of(LighthouseOutputFormat.HTML)
+		);
+	}
+
 	public static Map<LighthouseOutputFormat, String> runLighthouseAudit(
 			String url,
-			String reportBaseName,
+			//String reportBaseName,
 			List<LighthouseCategory> categories,
 			List<LighthouseOutputFormat> outputFormats
 	) {
@@ -30,7 +40,7 @@ public class LighthouseUtility {
 			File reportDir = new File(REPORTS_DIR);
 			if (!reportDir.exists()) reportDir.mkdirs();
 
-			String timestamp = new SimpleDateFormat("dd-MM-yyyy__HH-mm-ss").format(new Date());
+			String timestamp = new SimpleDateFormat("dd-MM-yyyy  HH-mm-ss").format(new Date());
 
 			// ✅ Build command
 			List<String> command = new ArrayList<>();
@@ -51,7 +61,7 @@ public class LighthouseUtility {
 
 			for (LighthouseOutputFormat format : outputFormats) {
 				String formatStr = format.getFormat(); // e.g., "html"
-				String reportPath = REPORTS_DIR + "/" + reportBaseName + "_" + timestamp + "." + formatStr;
+				String reportPath = REPORTS_DIR + "/" + "LightHouseReport" + "-" + timestamp + "." + formatStr;
 
 				outputFormatsList.add(formatStr);
 				outputPathsList.add(reportPath);
@@ -63,6 +73,7 @@ public class LighthouseUtility {
 
 
 			// ✅ Add both formats and paths to the command
+			command.add("--quiet"); // that reduces logs to only critical issues
 			command.add("--output=" + String.join(",", outputFormatsList));
 			command.add("--output-path=" + String.join(",", outputPathsList));
 			command.add("--chrome-flags=--headless");
@@ -129,6 +140,37 @@ public class LighthouseUtility {
 			System.out.println("✅ Attached report to Allure: " + file.getName());
 		} catch (IOException e) {
 			System.err.println("⚠️ Failed to attach report to Allure: " + e.getMessage());
+		}
+	}
+	public enum LighthouseOutputFormat {
+		HTML("html"),
+		JSON("json");
+
+		private final String format;
+
+		LighthouseOutputFormat(String format) {
+			this.format = format;
+		}
+
+		public String getFormat() {
+			return format;
+		}
+	}
+	public enum LighthouseCategory {
+		ACCESSIBILITY("accessibility"),
+		PERFORMANCE("performance"),
+		SEO("seo"),
+		BEST_PRACTICES("best-practices"),
+		PWA("pwa");
+
+		private final String value;
+
+		LighthouseCategory(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
 		}
 	}
 }
