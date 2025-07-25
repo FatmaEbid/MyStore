@@ -61,10 +61,6 @@ lighthouse https://www.example.com \
   --disable-storage-reset \
   --quiet
 ```
-
-* The `--quiet` flag suppresses non-critical logs.
-* See official flags and options: [https://github.com/GoogleChrome/lighthouse/blob/main/docs/cli-flags.md](https://github.com/GoogleChrome/lighthouse/blob/main/docs/cli-flags.md)
-
 <br/>
 
 ### 4. Using in Test Cases Directly
