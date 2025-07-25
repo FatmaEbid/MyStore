@@ -1,5 +1,6 @@
 package testCases;
 import Utilities.A11y.LogUtilities;
+import Utilities.A11y.lighthouse.LighthouseUtility;
 import actionDriver.Action;
 import base.BaseClass;
 import org.testng.annotations.*;
@@ -24,7 +25,7 @@ public class AccountCreationTest extends BaseClass {
 		loginPage.creatNewAccount(time+"email@ght.com");
 
 		accountCreationPage.pageHeadingIsDisplayed();
-		Utilities.A11y.lighthouse.LighthouseUtility.runAuditForCurrentUrl(driver);
+		LighthouseUtility.runAuditForCurrentUrl(driver);
 	}
 
 }

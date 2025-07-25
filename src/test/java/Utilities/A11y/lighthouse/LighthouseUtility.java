@@ -44,7 +44,11 @@ public class LighthouseUtility {
 
 			// ✅ Build command
 			List<String> command = new ArrayList<>();
-			command.add("lighthouse");
+			// Use the full path to the Lighthouse executable fro windows machine
+			String lighthousePath = "C:\\Users\\batoty\\AppData\\Roaming\\npm\\lighthouse.cmd"; // Adjust as needed
+			command.add(0, lighthousePath);
+
+			//command.add("lighthouse");  // this is for Mac
 			command.add(url);
 
 			// ✅ Add categories
@@ -73,12 +77,17 @@ public class LighthouseUtility {
 
 
 			// ✅ Add both formats and paths to the command
+			command.add("--chrome-path=\"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\chrome.exe\"");
 			command.add("--quiet"); // that reduces logs to only critical issues
 			command.add("--output=" + String.join(",", outputFormatsList));
 			command.add("--output-path=" + String.join(",", outputPathsList));
 			command.add("--chrome-flags=--headless");
 			command.add("--no-sandbox");
 			command.add("--disable-storage-reset");
+			command.add("--skip-audits=uses-http2,uses-long-cache-ttl,uses-optimized-images");
+			command.add("--max-wait-for-load=60000"); // wait up to 60 seconds
+			command.add("--throttling-method=provided");
+
 
 			// ✅ Debug output
 			System.out.println("✅ Output formats: " + outputFormatsList);
