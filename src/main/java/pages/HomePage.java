@@ -10,8 +10,8 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.List;
 
 
-public class MyAccountPage extends BaseClass {
-	public MyAccountPage(WebDriver driver) {
+public class HomePage extends BaseClass {
+	public HomePage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 	}
 

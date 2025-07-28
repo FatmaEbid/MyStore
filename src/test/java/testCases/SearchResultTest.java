@@ -24,7 +24,7 @@ public class SearchResultTest extends BaseClass {
 		//Verify user is navigated to ALL PRODUCTS  Search page successfully
 		Assert.assertTrue(searchResultPage.isSearchHeadingDisplayed());
 		//searchResultPage.getItemsDescribtion();
-		Utilities.A11y.resources.AccessibilityReportGenerator.generateReport(driver, AccessibilityReportGenerator.WCAGLevel.AA);
+		//Utilities.A11y.resources.AccessibilityReportGenerator.generateHTMLReport(driver, , AccessibilityReportGenerator.WCAGLevel.AA, );
 		searchResultPage.getProductPrice();
 
 	}

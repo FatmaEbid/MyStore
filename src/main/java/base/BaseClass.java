@@ -1,25 +1,20 @@
 package base;
 
 import actionDriver.Action;
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.*;
-import org.testng.asserts.SoftAssert;
 import pages.*;
 
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -28,14 +23,14 @@ public abstract class BaseClass {
 	public static WebDriver driver;
 	public static IndexPage indexPage;
 	public static LoginPage loginPage;
-	public static MyAccountPage myAccountPage;
+	public static HomePage myAccountPage;
 	public static AccountCreationPage accountCreationPage;
 	public static SearchResultPage searchResultPage;
 	public static WebDriverWait wait;
 	public static Logger logger;
 	
 	@BeforeClass
-	public void loadConfig() throws FileNotFoundException, IOException {
+	public void loadConfig() throws  IOException {
 		try(FileInputStream file = new FileInputStream
 				("src/Configration/config.properties")){
 
@@ -60,8 +55,8 @@ public abstract class BaseClass {
 				driver = new ChromeDriver();
 			}else if(browser.equalsIgnoreCase("firefox")) {
 				driver = new FirefoxDriver();
-			}else if(browser.equalsIgnoreCase("ie")) {
-				driver = new InternetExplorerDriver();
+			}else if(browser.equalsIgnoreCase("edge")) {
+				driver = new EdgeDriver();
 			}
 			Action.implicitWait(driver,15);
 			driver.get(properties.getProperty("url"));
@@ -73,7 +68,7 @@ public abstract class BaseClass {
 		accountCreationPage = new AccountCreationPage(driver);
 		indexPage = new IndexPage(driver);
 		loginPage = new LoginPage(driver);
-		myAccountPage = new MyAccountPage(driver);
+		myAccountPage = new HomePage(driver);
 		searchResultPage = new SearchResultPage(driver);
 		try{
 			PropertyConfigurator.configure("src/test/resources/log4j2.xml");

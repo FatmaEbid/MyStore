@@ -76,9 +76,12 @@ public class LighthouseUtility {
 			command.add("--quiet"); // that reduces logs to only critical issues
 			command.add("--output=" + String.join(",", outputFormatsList));
 			command.add("--output-path=" + String.join(",", outputPathsList));
-			command.add("--chrome-flags=--headless");
-			command.add("--no-sandbox");
-			command.add("--disable-storage-reset");
+			command.add("--chrome-flags=--headless"); // Run Chrome in headless mode
+			command.add("--disable-extensions"); // Disable extensions for better performance
+			command.add("--no-sandbox"); // Disable sandboxing for better performance
+			command.add("--disable-storage-reset"); // Disable storage reset to avoid clearing cookies and local storage
+			command.add("--disable-network-emulation"); // Disable network emulation for better performance
+			command.add("--disable-device-emulation"); // Disable device emulation for better performance
 
 			// ✅ Debug output
 			System.out.println("✅ Output formats: " + outputFormatsList);

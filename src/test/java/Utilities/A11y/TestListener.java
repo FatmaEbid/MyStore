@@ -1,19 +1,25 @@
 package Utilities.A11y;
 
+import Utilities.A11y.lighthouse.LighthouseUtility;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-public class TestLogListener implements ITestListener {
+import static base.BaseClass.driver;
+
+public class TestListener implements ITestListener {
 	@Override
 	public void onTestStart(ITestResult result) {
 		LogUtilities.setTestName(result.getMethod().getMethodName());
 		LogUtilities.info("🔹 Starting Test: " + result.getMethod().getMethodName());
+		LighthouseUtility.runAuditForCurrentUrl(driver);
 	}
 
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
 		LogUtilities.info("✅ Test passed");
+		LighthouseUtility.runAuditForCurrentUrl(driver);
+		LogUtilities.info("✅Lighthouse audit completed for: " + driver.getCurrentUrl());
 	}
 
 	@Override

@@ -2,12 +2,10 @@ package pages;
 
 import actionDriver.Action;
 import base.BaseClass;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -26,7 +24,7 @@ public class LoginPage extends BaseClass {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 	}
-	public MyAccountPage userLogin(String email, String password) {
+	public HomePage userLogin(String email, String password) {
 		//wait.until(ExpectedConditions.visibilityOf(registeredEmail));
 		//registeredEmail.sendKeys(email);
 		//driver.findElement(registeredEmail).sendKeys(email);
@@ -35,7 +33,7 @@ public class LoginPage extends BaseClass {
 		//System.out.println("Registered Email: "+registeredEmail.getText());
 		Action.type(passwrd, password);
 		Action.click(driver, signInBttn);
-		return new MyAccountPage(driver);
+		return new HomePage(driver);
 	}
 	public AccountCreationPage creatNewAccount(String newEmail){
 		Action.type(createEmailField, newEmail);
