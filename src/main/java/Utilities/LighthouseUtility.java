@@ -1,4 +1,4 @@
-package Utilities.A11y.lighthouse;
+package Utilities;
 
 import io.qameta.allure.Allure;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class LighthouseUtility {
 	private static final String REPORTS_DIR = "lighthouse-reports";
 
-	public static void runAuditForCurrentUrl(WebDriver driver) {
+	public static void runAuditForCurrentUrl(WebDriver driver, LighthouseCategory ...categories) {
 		String currentUrl = driver.getCurrentUrl();
 		runLighthouseAudit(
 				currentUrl,
