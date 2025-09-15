@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Description;
 import org.openqa.selenium.*;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -72,9 +73,9 @@ public class Footer {
 		}return urls;
 
 	}
-
+@Description("Clicks on each social media button in the footer and returns their URLs.")
 	// This method clicks on social media buttons in the footer and returns their URLs.
-	public List<String> clickOnSpecialMediaButtons() {
+	public List<String> clickOnEachMediaButtons() {
 		List<String> urls = new ArrayList<>();
 		List<WebElement> footerElements = driver.findElements(socialMediaButtons);
 
