@@ -2,20 +2,17 @@ package pages;
 
 import actionDriver.Action;
 import base.BaseClass;
+import io.qameta.allure.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
-import static base.BaseClass.driver;
 
 public class IndexPage extends BaseClass {
 	private final By searchBox = By.cssSelector("input#search_query_top");
@@ -34,14 +31,14 @@ public class IndexPage extends BaseClass {
 	private final By productList =By.cssSelector(".product_list.grid.row .product-name");
 
 	public IndexPage(WebDriver driver) {
-		PageFactory.initElements(driver, this);
 		this.driver = driver;
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	}
 
+@Description("Click on Navigation Bar Options: Contact Us or Sign In from the method")
+	public void menuBarOptions(navBarOptions option) {
 
-	public void menuBarOptions(menuBArOptions option) {
-		switch (option) {
+	switch (option) {
 			case CONTACT_US:
 				driver.findElement(By.linkText("Contact us")).click();
 				break;
@@ -163,6 +160,19 @@ public class IndexPage extends BaseClass {
 		}
 		return subNames;
 	}
+	public ResultPage selectOptionsFromMenuBar(menuList menuName) {
+		List<WebElement> menus = driver.findElements(mainMenuBar);
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(mainMenuBar));
+		if (menus.isEmpty()) {
+			System.out.println("⚠️ No menu Found");
+		} else {
+			menus.stream()
+					.filter(e->
+							e.getText().equals(menuName.getMenuName()))
+					.findFirst().orElseThrow().click();
+		}
+		return new ResultPage(driver);
+	}
 
 	public SearchResultPage searchProduct(String productName) {
 		driver.findElement(searchBox).sendKeys(productName);
@@ -184,13 +194,25 @@ public class IndexPage extends BaseClass {
 		return driver.getCurrentUrl();
 	}
 
-	public enum menuBArOptions {
+	public enum navBarOptions {
 		CONTACT_US("Contact us"),
 		SIGN_IN("Sign in");
 		private final String optionText;
 
-		menuBArOptions(String optionText) {
+		navBarOptions(String optionText) {
 			this.optionText = optionText;
+		}
+	}
+	public enum menuList {
+		WOMAN("Women"),
+		DRESSES("Dresses"),
+		T_SHIRTS("T-shirts");
+		private final String menuName;
+		menuList(String menuName) {
+			this.menuName = menuName;
+		}
+		public String getMenuName() {
+			return menuName;
 		}
 	}
 }

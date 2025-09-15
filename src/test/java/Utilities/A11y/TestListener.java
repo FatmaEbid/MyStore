@@ -1,6 +1,6 @@
 package Utilities.A11y;
 
-import Utilities.A11y.lighthouse.LighthouseUtility;
+import Utilities.LighthouseUtility;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 

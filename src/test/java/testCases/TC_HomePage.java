@@ -1,16 +1,22 @@
 package testCases;
-import Utilities.A11y.AccessUtilities;
+import Utilities.A11y.AllureReportUtil;
 import Utilities.A11y.LogUtilities;
-import Utilities.A11y.lighthouse.LighthouseUtility;
-import Utilities.A11y.resources.AccessibilityReportGenerator;
+import Utilities.LighthouseUtility;
+import io.qameta.allure.*;
+import io.qameta.allure.testng.*;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
 import pages.IndexPage;
+import ru.yandex.qatools.ashot.AShot;
+import ru.yandex.qatools.ashot.Screenshot;
+import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
 
-import javax.swing.text.Utilities;
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.List;
+import javax.imageio.ImageIO;
+import java.io.*;
 
+import static java.lang.System.getProperty;
 import static org.testng.Assert.assertTrue;
 
 
@@ -29,31 +35,58 @@ public class TC_HomePage extends BaseTestcases {
 		//accountCreationPage.pageHeadingIsDisplayed();
 		LighthouseUtility.runAuditForCurrentUrl(driver);
 	}
-	@Test
-	public void verifyNavOptions(){
-		LogUtilities.info("Info: Starting Menu Bar Options Test");
-		indexPage.menuBarOptions(IndexPage.menuBArOptions.SIGN_IN);
-		assertTrue(indexPage.getPageUrl().contains("my-account")); //"contact" for contact us page
+	//Method for full page screenshot using AShot
+	public byte[] captureFullPageScreenshot(WebDriver driver) throws IOException {
+		Screenshot screenshot = new AShot()
+				.shootingStrategy(ShootingStrategies.viewportPasting(1000))
+				.takeScreenshot(driver);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ImageIO.write(screenshot.getImage(), "PNG", baos);
+		return baos.toByteArray();
 	}
+		@Description("Click on Navigation Bar Options: Contact Us or Sign In, in TestNG")
+	@Severity(SeverityLevel.MINOR)
+	@Epic("EP001")
+	@Owner("Fatma")
+	@Tags(value = {@Tag("Regression"), @Tag("Navigation"), @Tag("Sanity")})
+	@Link(name = "Yahoo", type = "link",url = "https://www.yahoo.com/")
+	@Links(value= {@Link(name = "YouTube", type = "link",url = "https://www.youtube.com/"), @Link(name = "allure", url = "https://google.com")})
+	@Test
+	@TmsLinks(value = {@TmsLink("TC001"), @TmsLink( "TC002")})
+	@Issues(value = {@Issue(value = "BUG-001"), @Issue("BUG-002")})
+	@Issue("BUG-001")
+	public void verifyNavOptions() throws IOException {
+		LogUtilities.info("Info: Starting Menu Bar Options Test");
+		AllureReportUtil.addStepWithScreenshot("main Page Screenshot", driver, "Main Page Screenshot");
+		indexPage.menuBarOptions(IndexPage.navBarOptions.SIGN_IN);
+		AllureReportUtil.addStepWithScreenshot("Sign In Page Screenshot", driver, "Sign In Page Screenshot");
+		/*Allure.addAttachment("Page Screenshot", "image/png",
+				new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)), "png");
+*/
+			assertTrue(indexPage.getPageUrl().contains("my-account")); //"contact" for contact us page
+	}
+	@Severity(SeverityLevel.CRITICAL)
 	@Test
 	public void verifyFooter(){
 		LogUtilities.info("Info: Starting Footer Links Test");
-		footerPage.clickOnSpecialMediaButtons();
+		footerPage.clickOnEachMediaButtons();
 		footerPage.clickOnFooterLinks();
+
 	}
 	@Test
 	public void verifyMenuBarOptions() throws IOException {
+		//Allure.parameter("Browser", getProperty("browser"));
 		LogUtilities.info("Info: Starting Menu Bar Options Verification Test");
-		//AccessUtilities.scanPage(driver, EnumSet.of(AccessUtilities.WCAGLevel.AA), "Menu Bar Options Accessibility Report");
-		AccessibilityReportGenerator.generateReportFromRaw(  "color-contrast",
-				"serious",
-				"Element's contrast could not be determined because it uses complex text shadows",
-				driver.getCurrentUrl(),
-				List.of("a[title='Contact us']"),
-				"Chrome (Windows)",
-				"WCAG 2.1 AA");
-		//LighthouseUtility.runAuditForCurrentUrl(driver);
+		AllureReportUtil.addStepWithScreenshot("Menu Bar Options Page Screenshot", driver, "Menu Bar Options Page Screenshot");
+		//AllureReportUtil.attachScreenshot("Menu Bar Options Page Screenshot", driver);
+		LighthouseUtility.runAuditForCurrentUrl(driver, LighthouseUtility.LighthouseCategory.ACCESSIBILITY);
 		assertTrue(indexPage.checkMenuBarOptionsWithLeftMenu());
+		File htmlReport = new File(getProperty("user.dir") + "/PDFFiles/Retest-Pay by Gift Card -SIT.pdf");
+		Allure.addAttachment("PDF Report", "application/pdf", new FileInputStream(htmlReport), "pdf");
+		//Take screenshot and attach to Allure report
+		Allure.addAttachment("Page Screenshot", "image/png",
+				new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)), "png");
+
 	}
 
 
