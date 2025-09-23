@@ -12,7 +12,6 @@ import pages.IndexPage;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import ru.yandex.qatools.ashot.shooting.ShootingStrategies;
-
 import javax.imageio.ImageIO;
 import java.io.*;
 
@@ -88,12 +87,5 @@ public class TC_HomePage extends BaseTestcases {
 				new ByteArrayInputStream(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES)), "png");
 
 	}
-
-
-
-
-
-
-
 
 }
